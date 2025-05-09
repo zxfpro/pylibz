@@ -1,7 +1,4 @@
 
-
-
-
 def applescript():
 	"""
 	
