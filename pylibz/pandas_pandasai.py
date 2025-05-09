@@ -1,66 +1,9 @@
 
 
-#i : 我现在有两张表, 其中有一个共同的主键blocks_hash, 主表为blocks 附表为trans  一条blocks 可以对应多条trans ,现在我希望使用Pandas 将这两表合并在一起, 帮我写出对应代码
-
-#Obsidian : 要将两张表 `blocks` 和 `trans` 合并在一起，并且它们有一个共同的主键 `blocks_hash`，可以使用 Pandas 的 `merge` 函数。以下是示例代码：
-
-```python
-import pandas as pd
-
-# 假设 blocks 和 trans 是两个 DataFrame
-# blocks DataFrame 示例
-blocks = pd.DataFrame({
-    'blocks_hash': ['hash1', 'hash2', 'hash3'],
-    'block_data': ['data1', 'data2', 'data3']
-})
-
-# trans DataFrame 示例
-trans = pd.DataFrame({
-    'blocks_hash': ['hash1', 'hash1', 'hash2', 'hash3', 'hash3'],
-    'trans_data': ['trans1', 'trans2', 'trans3', 'trans4', 'trans5']
-})
-
-# 使用 merge 函数合并两个 DataFrame
-merged_df = pd.merge(blocks, trans, on='blocks_hash', how='inner')
-
-# 打印合并后的 DataFrame
-print(merged_df)
-```
-
-在这个示例中，`blocks` 和 `trans` 是两个 DataFrame，`blocks_hash` 是它们的共同主键。我们使用 `pd.merge()` 函数来合并这两个表，`on='blocks_hash'` 指定了要合并的列，`how='inner'` 表示使用内连接（即只保留在两个表中都存在的键）。你可以根据需要调整 `how` 参数为 `'left'`, `'right'`, 或 `'outer'` 来实现不同类型的合并。success
 
 
-#i : 我希望将blocks表中的column 列名 从hash改为 block_hash
+# pd.merge(blocks, trans, on='blocks_hash', how='inner') 合并两个df
 
-#Obsidian : 你可以使用 Pandas 的 `rename` 方法来更改 DataFrame 中的列名。在你的情况下，可以将 `blocks` 表中的 `blocks_hash` 列名更改为 `block_hash`。以下是如何实现的代码：
-
-```python
-import pandas as pd
-
-# 假设 blocks 和 trans 是两个 DataFrame
-# blocks DataFrame 示例
-blocks = pd.DataFrame({
-    'blocks_hash': ['hash1', 'hash2', 'hash3'],
-    'block_data': ['data1', 'data2', 'data3']
-})
-
-# trans DataFrame 示例
-trans = pd.DataFrame({
-    'blocks_hash': ['hash1', 'hash1', 'hash2', 'hash3', 'hash3'],
-    'trans_data': ['trans1', 'trans2', 'trans3', 'trans4', 'trans5']
-})
-
-# 重命名 blocks DataFrame 中的列名
-blocks = blocks.rename(columns={'blocks_hash': 'block_hash'})
-
-# 使用 merge 函数合并两个 DataFrame
-merged_df = pd.merge(blocks, trans, left_on='block_hash', right_on='blocks_hash', how='inner')
-
-# 打印合并后的 DataFrame
-print(merged_df)
-```
-
-在这个代码中，我们首先使用 `rename` 方法将 `blocks` DataFrame 中的 `blocks_hash` 列名更改为 `block_hash`。然后，在合并时，我们使用 `left_on='block_hash'` 和 `right_on='blocks_hash'` 来指定合并的列。这样可以确保合并操作使用正确的列名。success
 
 
 #i : 我希望看看df 中hash列去重后还剩多少?

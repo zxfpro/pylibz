@@ -69,7 +69,7 @@ class {FactoryClassName}:
     
 
 
-class 适配器():
+class Adapter():
     """
 使用效果就是直接调用老接口的对象的话对方咩有这个方法,
 那么就将老接口传入一个适配器,这样,老接口就有了新方法 有点像电源适配器,或者插头转换器
@@ -77,7 +77,7 @@ class 适配器():
 
 
     """
-    def update(self,class_name):
+    def update(self):
         self.p = """
 class NewPrinter(ABC):
     def print_content(self,content):
@@ -95,6 +95,10 @@ class Adapter(NewPrinter):
         print(self.p)
         return self.p
     
+
+
+
+
 
 class 装饰器():
     """
@@ -189,6 +193,144 @@ class Directory(FileSystemComponent):
         print(self.p)
         return self.p
     
+
+
+
+class 组合模式():
+    """
+# 理解了,是一种高级复杂的模式,类似于文件系统 文件是叶子 文件夹是节点,节点可以包括节点 节点也可以包括叶子,也会产生多级嵌套 
+# 可以使用这种
+# 使用组合模式
+file1 = File("file1.txt")
+file2 = File("file2.txt")
+
+directory1 = Directory("dir1")
+directory1.add(file1)
+
+directory2 = Directory("dir2")
+directory2.add(file2)
+directory2.add(directory1)
+
+print(directory2.operation())
+
+
+    """
+    def update(self,class_name):
+        self.p = """
+from abc import ABC, abstractmethod
+
+# Component 接口
+class FileSystemComponent(ABC):
+    @abstractmethod
+    def operation(self):
+        pass
+
+# Leaf 类
+class File(FileSystemComponent):
+    def __init__(self, name):
+        self.name = name
+
+    def operation(self):
+        return f"File: {self.name}"
+
+# Composite 类
+class Directory(FileSystemComponent):
+    def __init__(self, name):
+        self.name = name
+        self.children = []
+
+    def add(self, component: FileSystemComponent):
+        self.children.append(component)
+
+    def remove(self, component: FileSystemComponent):
+        self.children.remove(component)
+
+    def operation(self):
+        results = [f"Directory: {self.name}"]
+        for child in self.children:
+            results.append(child.operation())
+        return "\n".join(results)
+
+"""   
+        print(self.p)
+        return self.p
+    
+
+
+
+
+
+
+## 外观模式
+
+
+
+```python
+
+## 外观模式
+
+# 子系统类
+class TV:
+    def on(self):
+        print("TV is on")
+
+    def off(self):
+        print("TV is off")
+
+class SoundSystem:
+    def on(self):
+        print("Sound system is on")
+
+    def off(self):
+        print("Sound system is off")
+
+    def set_volume(self, volume):
+        print(f"Sound system volume set to {volume}")
+
+class DVDPlayer:
+    def on(self):
+        print("DVD player is on")
+
+    def off(self):
+        print("DVD player is off")
+
+    def play(self, movie):
+        print(f"Playing movie: {movie}")
+
+# 外观类
+class HomeTheaterFacade:
+    def __init__(self, tv: TV, sound_system: SoundSystem, dvd_player: DVDPlayer):
+        self._tv = tv
+        self._sound_system = sound_system
+        self._dvd_player = dvd_player
+
+    def watch_movie(self, movie):
+        print("Get ready to watch a movie...")
+        self._tv.on()
+        self._sound_system.on()
+        self._sound_system.set_volume(20)
+        self._dvd_player.on()
+        self._dvd_player.play(movie)
+
+    def end_movie(self):
+        print("Shutting down the home theater...")
+        self._tv.off()
+        self._sound_system.off()
+        self._dvd_player.off()
+
+# 使用外观模式
+tv = TV()
+sound_system = SoundSystem()
+dvd_player = DVDPlayer()
+
+home_theater = HomeTheaterFacade(tv, sound_system, dvd_player)
+home_theater.watch_movie("Inception")
+home_theater.end_movie()
+
+## 外观模式其实就是常用的综合类嘛
+# main的类别 work的工作  自动化工作流的想法
+
+
 
 
 
@@ -355,77 +497,6 @@ forest.draw("Canvas")
 # 如果想要新的图章,就定义新图章
 
 ```
-
-
-## 外观模式
-
-
-
-```python
-
-## 外观模式
-
-# 子系统类
-class TV:
-    def on(self):
-        print("TV is on")
-
-    def off(self):
-        print("TV is off")
-
-class SoundSystem:
-    def on(self):
-        print("Sound system is on")
-
-    def off(self):
-        print("Sound system is off")
-
-    def set_volume(self, volume):
-        print(f"Sound system volume set to {volume}")
-
-class DVDPlayer:
-    def on(self):
-        print("DVD player is on")
-
-    def off(self):
-        print("DVD player is off")
-
-    def play(self, movie):
-        print(f"Playing movie: {movie}")
-
-# 外观类
-class HomeTheaterFacade:
-    def __init__(self, tv: TV, sound_system: SoundSystem, dvd_player: DVDPlayer):
-        self._tv = tv
-        self._sound_system = sound_system
-        self._dvd_player = dvd_player
-
-    def watch_movie(self, movie):
-        print("Get ready to watch a movie...")
-        self._tv.on()
-        self._sound_system.on()
-        self._sound_system.set_volume(20)
-        self._dvd_player.on()
-        self._dvd_player.play(movie)
-
-    def end_movie(self):
-        print("Shutting down the home theater...")
-        self._tv.off()
-        self._sound_system.off()
-        self._dvd_player.off()
-
-# 使用外观模式
-tv = TV()
-sound_system = SoundSystem()
-dvd_player = DVDPlayer()
-
-home_theater = HomeTheaterFacade(tv, sound_system, dvd_player)
-home_theater.watch_movie("Inception")
-home_theater.end_movie()
-
-## 外观模式其实就是常用的综合类嘛
-# main的类别 work的工作  自动化工作流的想法
-
 
 
 
@@ -829,14 +900,589 @@ GUI开发：如菜单项和按钮的操作，通过命令模式实现可以方�
 
 
 
+###########################
+###############
+
+观察者
+
+```python
+
+# @title 观察者模式（Observer）
+
+#@markdown 其实就是监听跟随
+
+from abc import ABC, abstractmethod
+from typing import List
+
+# 主题接口
+class Subject(ABC):
+    @abstractmethod
+    def attach(self, observer: 'Observer'):
+        pass
+
+    @abstractmethod
+    def detach(self, observer: 'Observer'):
+        pass
+
+    @abstractmethod
+    def notify(self):
+        pass
+
+# 具体主题
+class WeatherData(Subject):
+    def __init__(self):
+        self._observers: List[Observer] = []
+        self._temperature: float = 0.0
+
+    def attach(self, observer: 'Observer'):
+        self._observers.append(observer)
+
+    def detach(self, observer: 'Observer'):
+        self._observers.remove(observer)
+
+    def notify(self):
+        for observer in self._observers:
+            observer.update(self._temperature)
+
+    def set_temperature(self, temperature: float):
+        print(f"WeatherData: setting temperature to {temperature}")
+        self._temperature = temperature
+        self.notify()
+
+# 观察者接口
+class Observer(ABC):
+    @abstractmethod
+    def update(self, temperature: float):
+        pass
+
+# 具体观察者
+class TemperatureDisplay(Observer):
+    def __init__(self, name: str):
+        self._name = name
+        self._temperature = 0.0
+
+    def update(self, temperature: float):
+        self._temperature = temperature
+        print(f"{self._name} Display: temperature updated to {self._temperature}")
+
+# 客户端代码
+if __name__ == "__main__":
+    weather_data = WeatherData()
+    print('################')
+    temp_display1 = TemperatureDisplay("Main")
+    temp_display2 = TemperatureDisplay("Secondary")
+    print('################')
+    weather_data.attach(temp_display1)
+    weather_data.attach(temp_display2)
+    print('################')
+    weather_data.set_temperature(25.0)
+    weather_data.set_temperature(30.0)
+    print('################')
+    weather_data.detach(temp_display1)
+    weather_data.set_temperature(35.0)
+
+
+
+
+```
+
+
+建造者模式
+
+
+```python
+
+## 建造者模式
+
+目的是将构建过程与表示分开
+
+# 产品
+class House:
+    def __init__(self):
+        self.foundation = None
+        self.structure = None
+        self.roof = None
+        self.interior = None
+
+    def __str__(self):
+        return f"House with {self.foundation}, {self.structure}, {self.roof}, and {self.interior}"
+
+# 生成器接口
+class HouseBuilder:
+    def build_foundation(self):
+        pass
+
+    def build_structure(self):
+        pass
+
+    def build_roof(self):
+        pass
+
+    def build_interior(self):
+        pass
+
+    def get_house(self):
+        pass
+
+# 具体生成器
+class ConcreteHouseBuilder(HouseBuilder):
+    def __init__(self):
+        self.house = House()
+
+    def build_foundation(self):
+        self.house.foundation = "Concrete foundation"
+
+    def build_structure(self):
+        self.house.structure = "Wood and brick structure"
+
+    def build_roof(self):
+        self.house.roof = "Shingle roof"
+
+    def build_interior(self):
+        self.house.interior = "Modern interior"
+
+    def get_house(self):
+        return self.house
+
+# 指挥者
+class Director:
+    def __init__(self, builder):
+        self.builder = builder
+
+    def construct_house(self):
+        self.builder.build_foundation()
+        self.builder.build_structure()
+        self.builder.build_roof()
+        self.builder.build_interior()
+        return self.builder.get_house()
+
+# 客户端代码
+builder = ConcreteHouseBuilder()
+director = Director(builder)
+house = director.construct_house()
+print(house)  # 输出: House with Concrete foundation, Wood and brick structure, Shingle roof, and Modern interior
+
+
+特别适合流程, 工作流
+
+
+
+
+```
+
+
+解释器
+
+
+
+```python
+
+## 解释器模式（Interpreter）
+
+解释器模式为一种语言定义一个解释器，该解释器使用一系列的表达式来表示文法规则。每种表达式都实现了一个解释操作。
+
+
+from abc import ABC, abstractmethod
+
+# 上下文类，存储变量的值
+class Context:
+    def __init__(self):
+        self.data = {}
+    
+    def set(self, variable, value):
+        self.data[variable] = value
+    
+    def get(self, variable):
+        return self.data.get(variable)
+
+# 抽象表达式类
+class Expression(ABC):
+    @abstractmethod
+    def interpret(self, context: Context):
+        pass
+
+# 终结符表达式：表示变量
+class VariableExpression(Expression):
+    def __init__(self, name):
+        self.name = name
+    
+    def interpret(self, context: Context):
+        return context.get(self.name)
+
+# 终结符表达式：表示数字
+class NumberExpression(Expression):
+    def __init__(self, number):
+        self.number = number
+    
+    def interpret(self, context: Context):
+        return self.number
+
+# 非终结符表达式：加法表达式
+class AddExpression(Expression):
+    def __init__(self, left: Expression, right: Expression):
+        self.left = left
+        self.right = right
+    
+    def interpret(self, context: Context):
+        return self.left.interpret(context) + self.right.interpret(context)
+
+# 非终结符表达式：减法表达式
+class SubtractExpression(Expression):
+    def __init__(self, left: Expression, right: Expression):
+        self.left = left
+        self.right = right
+    
+    def interpret(self, context: Context):
+        return self.left.interpret(context) - self.right.interpret(context)
+
+# 客户端代码
+if __name__ == "__main__":
+    # 创建上下文并设置变量的值
+    context = Context()
+    context.set("x", 10)
+    context.set("y", 20)
+
+    # 创建表达式
+    expression = AddExpression(
+        SubtractExpression(
+            NumberExpression(5),
+            VariableExpression("x")
+        ),
+        VariableExpression("y")
+    )
+
+    # 解释并计算表达式的值
+    result = expression.interpret(context)
+    print(f"Result of the expression: {result}")  # 输出：Result of the expression: 15
+
+
+解释器模式的应用场景
+编译器：编译器中的语法解析器使用解释器模式来解析和解释代码。
+脚本语言：解释脚本语言，如正则表达式解析器、SQL解析器等。
+配置文件解析：解析和评估简单的配置文件或命令行参数。
+机器人指令解释：机器人或自动化系统中的命令解释和执行。
+
+没太懂
+
+```
+
+
+## 责任链
+
+
+
+```python
+from abc import ABC, abstractmethod
+
+class Handler(ABC):
+    def __init__(self):
+        self._next_handler = None
+
+    def set_next(self, handler):
+        self._next_handler = handler
+        return handler
+
+    @abstractmethod
+    def handle(self, request):
+        if self._next_handler:
+            return self._next_handler.handle(request)
+        return None
+
+class InfoHandler(Handler):
+    def handle(self, request):
+        if request == "INFO":
+            print("InfoHandler: Handling INFO level request")
+        else:
+            super().handle(request)
+
+class DebugHandler(Handler):
+    def handle(self, request):
+        if request == "DEBUG":
+            print("DebugHandler: Handling DEBUG level request")
+        else:
+            super().handle(request)
+
+class ErrorHandler(Handler):
+    def handle(self, request):
+        if request == "ERROR":
+            print("ErrorHandler: Handling ERROR level request")
+        else:
+            super().handle(request)
+
+# 客户端代码
+if __name__ == "__main__":
+    # 创建具体处理者
+    info_handler = InfoHandler()
+    debug_handler = DebugHandler()
+    error_handler = ErrorHandler()
+
+    # 设置处理链
+    info_handler.set_next(debug_handler).set_next(error_handler)
+
+    # 提交请求
+    requests = ["INFO", "DEBUG", "ERROR", "UNKNOWN"]
+    for req in requests:
+        print(f"Client: Submitting {req} request")
+        info_handler.handle(req)
+        print()
+
+
+```
+
+OA 审批流程,权限验证
 
 
 
 
 
+```python
+
+
+
+## 中介者模式（Mediator）
+
+简单来说就是群聊, 广播
+
+from abc import ABC, abstractmethod
+
+# 中介者接口
+class Mediator(ABC):
+    @abstractmethod
+    def send(self, message: str, colleague: 'Colleague'):
+        pass
+
+# 具体中介者
+class ConcreteMediator(Mediator):
+    def __init__(self):
+        self._colleagues = []
+
+    def add_colleague(self, colleague: 'Colleague'):
+        self._colleagues.append(colleague)
+        colleague.set_mediator(self)
+
+    def send(self, message: str, colleague: 'Colleague'):
+        for c in self._colleagues:
+            if c != colleague:
+                c.receive(message)
+
+# 同事对象接口
+class Colleague(ABC):
+    def __init__(self):
+        self._mediator = None
+
+    def set_mediator(self, mediator: Mediator):
+        self._mediator = mediator
+
+    @abstractmethod
+    def send(self, message: str):
+        pass
+
+    @abstractmethod
+    def receive(self, message: str):
+        pass
+
+# 具体同事对象
+class ConcreteColleague(Colleague):
+    def __init__(self, name):
+        super().__init__()
+        self._name = name
+
+    def send(self, message: str):
+        print(f"{self._name} sends message: {message}")
+        self._mediator.send(message, self)
+
+    def receive(self, message: str):
+        print(f"{self._name} receives message: {message}")
+
+# 客户端代码
+if __name__ == "__main__":
+    # 创建中介者
+    mediator = ConcreteMediator()
+
+    # 创建同事对象
+    colleague1 = ConcreteColleague("User1")
+    colleague2 = ConcreteColleague("User2")
+    colleague3 = ConcreteColleague("User3")
+
+    # 将同事对象添加到中介者
+    mediator.add_colleague(colleague1)
+    mediator.add_colleague(colleague2)
+    mediator.add_colleague(colleague3)
+
+    # 发送消息
+    colleague1.send("Hello everyone!")
+
+
+```
+
+
+
+```python
 
 
 
 
 
+#@title 状态模式（State）
+#状态模式允许对象在其内部状态发生改变时改变其行为，对象看起来好像修改了它的类。状态模式将状态转换行为封装到不同的状态类中，使得状态的切换更加灵活和可扩展。
+#应用场景：状态机、游戏中的对象状态变化、工作流引擎等。
+#开关灯的场景状态等,米家工作流.
+
+from abc import ABC, abstractmethod
+
+# 抽象状态
+class State(ABC):
+    @abstractmethod
+    def handle(self, context: 'Context'):
+        pass
+
+# 具体状态：灯打开
+class OnState(State):
+    def handle(self, context: 'Context'):
+        print("Light is already on. Turning it off.")
+        context.set_state(OffState())
+
+# 具体状态：灯关闭
+class OffState(State):
+    def handle(self, context: 'Context'):
+        print("Light is off. Turning it on.")
+        context.set_state(OnState())
+
+# 上下文
+class Context:
+    def __init__(self, state: State):
+        self._state = state
+
+    def request(self):
+        self._state.handle(self)
+
+    def set_state(self, state: State):
+        self._state = state
+
+# 客户端代码
+if __name__ == "__main__":
+    # 创建上下文和初始状态
+    context = Context(OffState())
+
+    # 改变状态
+    context.request()
+    context.request()
+    context.request()
+
+
+
+
+# @title 策略模式（Strategy）
+策略模式定义一系列算法，并将每个算法封装起来，使它们可以相互替换。策略模式使得算法可以在不影响客户端的情况下发生变化。
+
+应用场景：排序算法、加密算法、日志策略等。
+策略模式做的情况是,可以在不需要关闭服务的情况下,动态的变换策略
+和工厂模式有点像
+
+from abc import ABC, abstractmethod
+from typing import List
+
+# 策略接口
+class SortStrategy(ABC):
+    @abstractmethod
+    def sort(self, data: List[int]) -> List[int]:
+        pass
+
+# 具体策略：快速排序
+class QuickSortStrategy(SortStrategy):
+    def sort(self, data: List[int]) -> List[int]:
+        print("Using QuickSort")
+        return sorted(data)  # 这里使用Python内置排序作为简化的快速排序实现
+
+# 具体策略：插入排序
+class InsertionSortStrategy(SortStrategy):
+    def sort(self, data: List[int]) -> List[int]:
+        print("Using InsertionSort")
+        for i in range(1, len(data)):
+            key = data[i]
+            j = i - 1
+            while j >= 0 and key < data[j]:
+                data[j + 1] = data[j]
+                j -= 1
+            data[j + 1] = key
+        return data
+
+# 上下文
+class SortContext:
+    def __init__(self, strategy: SortStrategy):
+        self._strategy = strategy
+
+    def set_strategy(self, strategy: SortStrategy):
+        self._strategy = strategy
+
+    def sort(self, data: List[int]) -> List[int]:
+        return self._strategy.sort(data)
+
+# 客户端代码
+if __name__ == "__main__":
+    data = [5, 3, 8, 4, 2]
+
+    context = SortContext(QuickSortStrategy())
+    print(context.sort(data))
+
+    context.set_strategy(InsertionSortStrategy())
+    print(context.sort(data))
+
+
+
+
+#@title 模板方法模式（Template Method）
+模板方法模式在一个方法中定义了算法的骨架，而将一些步骤延迟到子类中。模板方法使得子类可以在不改变算法结构的情况下，重新定义算法的某些步骤。
+
+应用场景：算法框架、工作流程、游戏开发中的AI行为等。
+
+#### 就是标准的抽象类思想
+
+from abc import ABC, abstractmethod
+
+# 抽象类
+class DataProcessor(ABC):
+    def process_data(self):
+        self.read_data()
+        self.process()
+        self.save_data()
+
+    @abstractmethod
+    def read_data(self):
+        pass
+
+    @abstractmethod
+    def process(self):
+        pass
+
+    def save_data(self):
+        print("Saving processed data.")
+
+# 具体类
+class CSVDataProcessor(DataProcessor):
+    def read_data(self):
+        print("Reading data from a CSV file.")
+
+    def process(self):
+        print("Processing data from a CSV file.")
+
+class JSONDataProcessor(DataProcessor):
+    def read_data(self):
+        print("Reading data from a JSON file.")
+
+    def process(self):
+        print("Processing data from a JSON file.")
+
+# 客户端代码
+if __name__ == "__main__":
+    csv_processor = CSVDataProcessor()
+    csv_processor.process_data()
+
+    json_processor = JSONDataProcessor()
+    json_processor.process_data()
+
+
+
+
+```
 
