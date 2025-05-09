@@ -1,13 +1,15 @@
 
 
 
-https://sspai.com/post/46912
 
-https://sspai.com/post/43758
+def applescript():
+	"""
+	
+	https://sspai.com/post/46912
 
-
-查看open webui 
-
+	https://sspai.com/post/43758
+	"""
+	return """
 
 ```applescript
 **use** AppleScript version "2.4" -- Yosemite (10.10) or later
@@ -64,3 +66,5 @@ end tell
 
 -- static text "hierarchy" of group 7 of UI element 1 of scroll area 1 of group 1 of group 1 of window "网易有道翻译" of application process "网易有道翻译" of application "System Events",
 ```
+
+"""
