@@ -36,15 +36,8 @@ def save_yaml(v: dict, file_path: str):
 ```
 
 ```python
-# 数据查看
-!pip install dtale
-import dtale
-dtale.show(df, open_browser=True)
-```
+# 数据查看 !pip install dtale
 
-- **环境变量管理**：dotenv 允许开发者将配置信息（如 API 密钥、数据库连接字符串等）存储在 `.env` 文件中，并在应用程序启动时自动加载这些变量。
-- **多环境支持**：可以为不同的环境（如开发、测试、生产）创建不同的 `.env` 文件（如 `.env.development`、`.env.production`），然后根据当前的运行环境加载相应的文件。
-- **提高安全性**：通过将敏感信息存储在 `.env` 文件中，而不是源代码中，避免了敏感信息的泄露。
 
 
 ```bash
